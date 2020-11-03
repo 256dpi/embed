@@ -19,7 +19,7 @@ const tmpl = `
 
 package {{.Package}}
 
-{{if .Consts}}
+{{if .Const}}
 {{- range .Files}}
 // {{.Comment}}
 const {{.Name}} = {{if $.Strings}}{{.String}}{{else}}[]byte{ {{range .Bytes}}{{.}},{{end}} }{{end}}
@@ -45,18 +45,18 @@ type data struct {
 	Package string
 	Export  bool
 	Strings bool
-	Consts  bool
+	Const   bool
 	Name    string
 	Files   []file
 }
 
-var output = flag.String("out", "files.go", "output filename")
-var pkgName = flag.String("pkg", "main", "package name")
-var exportVariables = flag.Bool("export", false, "export variables")
-var useStrings = flag.Bool("strings", false, "use strings instead of byte slices")
-var stripName = flag.Bool("strip", false, "strip path and extension")
-var useConsts = flag.Bool("consts", false, "use constants instead of map")
-var mapName = flag.String("name", "files", "the map name")
+var output = flag.String("out", "files.go", "The output filename.")
+var pkgName = flag.String("pkg", "main", "The package name.")
+var exportVariables = flag.Bool("export", false, "Whether to export variables.")
+var useStrings = flag.Bool("strings", false, "Whether to use strings instead of byte slices.")
+var stripName = flag.Bool("strip", false, "Whether to strip names of path and extension.")
+var useConst = flag.Bool("const", false, "Whether to use constants instead of a map.")
+var mapName = flag.String("name", "files", "The map name.")
 
 func main() {
 	// parse flags
@@ -103,13 +103,13 @@ func main() {
 			name = strings.TrimPrefix(name, basePath+"/")
 
 			// strip if requested
-			if *stripName || *useConsts {
+			if *stripName || *useConst {
 				name = filepath.Base(name)
 				name = strings.TrimSuffix(name, path.Ext(name))
 			}
 
 			// make uppercase if exported
-			if *useConsts {
+			if *useConst {
 				name = titleize(name)
 			}
 
@@ -139,7 +139,7 @@ func main() {
 		Package: *pkgName,
 		Export:  *exportVariables,
 		Strings: *useStrings,
-		Consts:  *useConsts,
+		Const:   *useConst,
 		Files:   files,
 		Name:    *mapName,
 	}

@@ -14,16 +14,19 @@ go get github.com/256dpi/embed
 
 ```
 Usage of embed:
-  -consts
-    	use constants instead of map
+  -const
+        Whether to use constants instead of a map.
   -export
-    	export variables
+        Whether to export variables.
+  -name string
+        The map name. (default "files")
   -out string
-    	output filename (default "files.go")
+        The output filename. (default "files.go")
   -pkg string
-    	package name (default "main")
+        The package name. (default "main")
   -strings
-    	use strings instead of byte slices
+        Whether to use strings instead of byte slices.
   -strip
-    	strip path and extension
+        Whether to strip names of path and extension.
+
 ```
