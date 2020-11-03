@@ -52,7 +52,7 @@ type data struct {
 
 var output = flag.String("out", "files.go", "The output filename.")
 var pkgName = flag.String("pkg", "main", "The package name.")
-var exportVariables = flag.Bool("export", false, "Whether to export variables.")
+var export = flag.Bool("export", false, "Whether to export variables.")
 var useStrings = flag.Bool("strings", false, "Whether to use strings instead of byte slices.")
 var stripName = flag.Bool("strip", false, "Whether to strip names of path and extension.")
 var useConst = flag.Bool("const", false, "Whether to use constants instead of a map.")
@@ -66,6 +66,16 @@ func main() {
 	if len(flag.Args()) == 0 {
 		flag.Usage()
 		return
+	}
+
+	// constants imply strings
+	if *useConst {
+		*useStrings = true
+	}
+
+	// titleize map name
+	if *export {
+		*mapName = titleize(*mapName)
 	}
 
 	// get paths
@@ -135,7 +145,7 @@ func main() {
 	// prepare input
 	input := data{
 		Package: *pkgName,
-		Export:  *exportVariables,
+		Export:  *export,
 		Strings: *useStrings,
 		Const:   *useConst,
 		Files:   files,
@@ -176,7 +186,7 @@ func main() {
 
 func titleize(input string) string {
 	// prepare flag
-	upNext := *exportVariables
+	upNext := *export
 
 	// prepare string
 	var titleized string
