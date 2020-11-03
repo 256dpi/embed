@@ -34,5 +34,4 @@ Usage of embed:
         Whether to use strings instead of byte slices.
   -strip
         Whether to strip names of path and extension.
-
 ```
