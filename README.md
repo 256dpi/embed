@@ -10,6 +10,12 @@
 go get github.com/256dpi/embed
 ```
 
+## Example
+
+```go
+//go:generate go run github.com/embed -pkg frontend -strings ./assets 
+```
+
 ## Usage
 
 ```
