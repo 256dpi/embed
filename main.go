@@ -62,22 +62,20 @@ func main() {
 	// parse flags
 	flag.Parse()
 
-	// get paths
-	paths := flag.Args()
-	if len(paths) == 0 {
+	// check args
+	if len(flag.Args()) == 0 {
 		flag.Usage()
 		return
 	}
 
-	// clean paths
-	for _, pth := range paths {
-		pth = strings.TrimSuffix(pth, "/")
+	// get paths
+	var paths []string
+	for _, pth := range flag.Args() {
+		paths = append(paths, strings.TrimSuffix(pth, "/"))
 	}
 
-	// prepare map
+	// collect files
 	var files []file
-
-	// walk all paths
 	for _, basePath := range paths {
 		err := filepath.Walk(basePath, func(pth string, info os.FileInfo, err error) error {
 			// check error
